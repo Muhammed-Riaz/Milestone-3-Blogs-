@@ -9,17 +9,7 @@ const nextConfig = {
       },
     ],
   },
-  return : [
-    {
-      source: '/(.*)',
-      headers: [
-        {
-          key: 'Content-Security-Policy',
-          value: "default-src 'self'; img-src 'self' data:; script-src 'self'; style-src 'self';",
-        },
-      ],
-    },
-  ]
+
   
 };
 
