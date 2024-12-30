@@ -1,5 +1,4 @@
-"use client";
-
+"use client"
 import { FetchBlogBySlug, Blog } from "@/app/component/query";
 import { urlFor } from "@/sanity/lib/image";
 import Image from "next/image";
@@ -8,7 +7,9 @@ import { useEffect, useState } from "react";
 import { FaSpinner } from "react-icons/fa";
 import React from "react";
 import { client } from "@/sanity/lib/client";
-import DOMPurify from "dompurify"; // Import DOMPurify for sanitization
+import DOMPurify from "dompurify";
+import { PortableText } from "@portabletext/react"; // Ensure proper import for PortableText
+import convertToPortableText from "@/app/component/potable";
 
 const Page = ({ params }: { params: Promise<{ slug: string }> }) => {
   const resovlparam = React.use(params);
@@ -47,12 +48,9 @@ const Page = ({ params }: { params: Promise<{ slug: string }> }) => {
 
   const handleCommentSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    // Sanitize inputs
     const sanitizedComment = DOMPurify.sanitize(newComment.trim());
     const sanitizedName = DOMPurify.sanitize(newName.trim());
 
-    // Prevent empty or invalid inputs
     if (sanitizedComment === "" || sanitizedName === "") return;
 
     const newCommentData = {
@@ -60,13 +58,11 @@ const Page = ({ params }: { params: Promise<{ slug: string }> }) => {
       commentText: sanitizedComment,
     };
 
-    // Update the comments locally
     const updatedComments = [...comments, newCommentData];
     setComments(updatedComments);
     setNewComment("");
     setNewName("");
 
-    // Update the blog document in Sanity
     if (data) {
       await client
         .patch(data._id)
@@ -144,17 +140,28 @@ const Page = ({ params }: { params: Promise<{ slug: string }> }) => {
         </div>
 
         <div className="mb-6">
-          <p className="text-[16px] text-gray-700 leading-relaxed">
-            {data.content || "Content is not available."}
-          </p>
-        </div>
+  <PortableText
+    value={data.content ? convertToPortableText(data.content) : []}
+    components={{
+      block: {
+        normal: ({ children }) => <p className="text-[16px] text-gray-700 leading-relaxed">{children}</p>,
+      },
+    }}
+  />
+</div>
 
-        <div>
-          <h2 className="my-10 text-3xl font-bold text-gray-800">Conclusion:</h2>
-          <p className="text-[16px] text-gray-700 leading-relaxed">
-            {data.conclusion || "Conclusion not available."}
-          </p>
-        </div>
+<div>
+  <h2 className="my-10 text-3xl font-bold text-gray-800">Conclusion:</h2>
+  <PortableText
+    value={data.conclusion ? convertToPortableText(data.conclusion) : []}
+    components={{
+      block: {
+        normal: ({ children }) => <p className="text-[16px] text-gray-700 leading-relaxed">{children}</p>,
+      },
+    }}
+  />
+</div>
+
 
         <div>
           <h1 className="my-10 text-3xl font-bold text-gray-800">Comments:</h1>
@@ -181,19 +188,19 @@ const Page = ({ params }: { params: Promise<{ slug: string }> }) => {
               type="text"
               value={newName}
               onChange={(e) => setNewName(e.target.value)}
-              className="w-full p-2 border rounded-lg mb-2"
+              className="w-full p-2 border rounded mb-2"
               placeholder="Your Name"
             />
             <textarea
               value={newComment}
               onChange={(e) => setNewComment(e.target.value)}
               rows={4}
-              className="w-full p-2 border rounded-lg"
+              className="w-full p-2 border rounded"
               placeholder="Write your comment..."
             />
             <button
               type="submit"
-              className="mt-4 bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
+              className="mt-4 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
             >
               Post Comment
             </button>

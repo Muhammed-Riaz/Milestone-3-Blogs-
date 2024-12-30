@@ -1,0 +1,9 @@
+# Ignore Sanity project folder
+/sanity/*
+
+# Ignore sensitive environment files
+.env.local
+
+# Ignore test or local files/folders
+/test/*
+/node_modules/*

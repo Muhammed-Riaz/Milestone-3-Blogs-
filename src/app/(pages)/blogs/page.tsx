@@ -49,11 +49,11 @@ function Blogs() {
     <section className="font-sans">
       <div className="min-h-screen py-10">
         {/* Top Text Heading */}
-        <div className="relative mb-12 text-center">
-          <h1 className="mb-4 lg:text-4xl text-3xl px-1 font-bold text-muted-foreground ">
+        <div className="relative mb-12 text-center text-muted-foreground">
+          <h1 className="mb-4 lg:text-4xl text-3xl px-1 font-bold ">
             Latest Articles: Technology in the Workplace
           </h1>
-          <p className="text-muted-foreground text-xl">
+          <p className=" text-xl">
             Blogs exploring the impact of technology
           </p>
         </div>

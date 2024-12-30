@@ -10,8 +10,19 @@ export const blogSchema = defineType({
     { name: "image", type: "image", title: "Image" },
     { name: "category", type: "string", title: "Category" },
     { name: "publishedDate", type: "date", title: "Published Date" },
-    { name: "content", type: "text", title: "Content" },
-    { name: "conclusion", type: "text", title: "Conclusion" },
+    {
+      name: "content",
+      type: "array",
+      title: "Content",
+      of: [{ type: "block" }],
+    },
+    {
+      name: "conclusion",
+      type: "array",
+      title: "Conclusion",
+      of: [{ type: "block" }],
+    },
+    
     {
       name: "author",
       type: "reference",
